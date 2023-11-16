@@ -17,7 +17,7 @@ VALUES (
     COALESCE($2::text, 'i'),
     $3
 )
-RETURNING id
+RETURNING id, username, email
 `
 
 type CreateUserParams struct {
@@ -26,11 +26,17 @@ type CreateUserParams struct {
 	Hash     []byte         `json:"hash"`
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (int32, error) {
+type CreateUserRow struct {
+	ID       int32  `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error) {
 	row := q.db.QueryRowContext(ctx, createUser, arg.Email, arg.Username, arg.Hash)
-	var id int32
-	err := row.Scan(&id)
-	return id, err
+	var i CreateUserRow
+	err := row.Scan(&i.ID, &i.Username, &i.Email)
+	return i, err
 }
 
 const deleteUser = `-- name: DeleteUser :exec

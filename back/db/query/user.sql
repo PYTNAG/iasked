@@ -5,7 +5,7 @@ VALUES (
     COALESCE(sqlc.narg(username)::text, 'i'),
     @hash
 )
-RETURNING id;
+RETURNING id, username, email;
 
 -- name: GetUserInfo :one
 SELECT username, email

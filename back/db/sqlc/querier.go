@@ -11,7 +11,7 @@ import (
 type Querier interface {
 	CreateComment(ctx context.Context, arg CreateCommentParams) (int32, error)
 	CreateRFC(ctx context.Context, arg CreateRFCParams) (int32, error)
-	CreateUser(ctx context.Context, arg CreateUserParams) (int32, error)
+	CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error)
 	DeleteComment(ctx context.Context, commentID int32) error
 	DeleteRFC(ctx context.Context, rfcID int32) error
 	DeleteUser(ctx context.Context, userID int32) error
