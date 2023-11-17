@@ -49,3 +49,8 @@ func RandomEmail() string {
 
 	return fmt.Sprintf("%s@%s.%s", mailbox, mailServer, domain)
 }
+
+// RandomMessage generate a random message for RFC
+func RandomMessage() string {
+	return RandomString(32)
+}
