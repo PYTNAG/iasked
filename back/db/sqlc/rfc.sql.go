@@ -40,3 +40,43 @@ func (q *Queries) DeleteRFC(ctx context.Context, rfcID int32) error {
 	_, err := q.db.ExecContext(ctx, deleteRFC, rfcID)
 	return err
 }
+
+const getLastRFCs = `-- name: GetLastRFCs :many
+SELECT id, author_id, message, created_at, archived FROM rfcs
+ORDER BY rfcs.created_at DESC
+LIMIT $2 OFFSET $1
+`
+
+type GetLastRFCsParams struct {
+	Offset int32 `json:"offset"`
+	Limit  int32 `json:"limit"`
+}
+
+func (q *Queries) GetLastRFCs(ctx context.Context, arg GetLastRFCsParams) ([]Rfc, error) {
+	rows, err := q.db.QueryContext(ctx, getLastRFCs, arg.Offset, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Rfc{}
+	for rows.Next() {
+		var i Rfc
+		if err := rows.Scan(
+			&i.ID,
+			&i.AuthorID,
+			&i.Message,
+			&i.CreatedAt,
+			&i.Archived,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

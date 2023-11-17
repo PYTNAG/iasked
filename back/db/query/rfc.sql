@@ -6,6 +6,12 @@ VALUES (
 )
 RETURNING id;
 
+-- name: GetLastRFCs :many
+SELECT * FROM rfcs
+ORDER BY rfcs.created_at DESC
+LIMIT sqlc.arg('limit') OFFSET sqlc.arg('offset');
+
+
 -- name: DeleteRFC :exec
 DELETE FROM rfcs
 WHERE id = @rfc_id;
