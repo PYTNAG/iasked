@@ -16,4 +16,10 @@ stop_db_container:
 connect_db_container:
 	docker exec -it iasked_db psql -d iasked
 
-.PHONY db_container create_db drop_db start_db_container stop_db_container connect_db_container
+migrate_up:
+	migrate -path ./db/migration -database "postgresql://root:mysecret@localhost:5432/iasked?sslmode=disable" -verbose up
+
+migrate_down:
+	migrate -path ./db/migration -database "postgresql://root:mysecret@localhost:5432/iasked?sslmode=disable" -verbose down
+
+.PHONY: db_container create_db drop_db start_db_container stop_db_container connect_db_container
