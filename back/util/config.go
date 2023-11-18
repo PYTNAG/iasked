@@ -3,8 +3,9 @@ package util
 import "github.com/spf13/viper"
 
 type Config struct {
-	DBDriver string `mapstructure:"DB_DRIVER"`
-	DBSource string `mapstructure:"DB_SOURCE"`
+	DBDriver           string `mapstructure:"DB_DRIVER"`
+	DBSource           string `mapstructure:"DB_SOURCE"`
+	PasetoSymmetricKey string `mapstructure:"PASETO_SYMMETRIC_KEY"`
 }
 
 func LoadConfig(path string) (cfg Config, err error) {
