@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message UpdateEmailRequest {
+    int32 user_id = 1;
+    string email = 2;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package pb;
+
+import "rfc/rpc_create_rfc.proto";
+import "rfc/rpc_get_last_rfcs.proto";
+import "rfc/rfc.proto";
+import "rfc/rpc_delete_rfc.proto";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+service RfcAPI {
+    rpc CreateRFC (CreateRFCRequest) returns (CreateRFCResponse);
+    rpc GetLastRFCs (GetLastRFCsRequest) returns (stream RFC);
+    rpc DeleteRFC (DeleteRFCRequest) returns (google.protobuf.Empty);
+}

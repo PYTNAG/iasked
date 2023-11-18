@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message RFC {
+    int32 id = 1;
+    string message = 2;
+    google.protobuf.Timestamp created_at = 3;
+    bool archived = 4;
+
+    optional int32 author_id = 5;
+}

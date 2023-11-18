@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "user/rpc_create_user.proto";
+import "user/rpc_get_user_info.proto";
+import "user/rpc_update_username.proto";
+import "user/rpc_update_email.proto";
+import "user/rpc_update_password.proto";
+import "user/rpc_delete_user.proto";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+service UserAPI {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);
+
+    rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse);
+    rpc UpdateUsername (UpdateUsernameRequest) returns (google.protobuf.Empty);
+    rpc UpdateEmail (UpdateEmailRequest) returns (google.protobuf.Empty);
+    rpc UpdatePassword (UpdatePasswordRequest) returns (google.protobuf.Empty);
+
+    rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);
+}

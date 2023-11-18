@@ -22,4 +22,10 @@ migrate_up:
 migrate_down:
 	migrate -path ./db/migration -database "postgresql://root:mysecret@localhost:5432/iasked?sslmode=disable" -verbose down
 
-.PHONY: db_container create_db drop_db start_db_container stop_db_container connect_db_container
+proto:
+	rm -f pb/*.go
+	protoc --proto_path=proto --go_out=pb --go_opt=paths=source_relative \
+    --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
+    proto/user/*.proto proto/rfc/*.proto proto/comment/*.proto
+
+.PHONY: db_container create_db drop_db start_db_container stop_db_container connect_db_container migrate_down migrate_up proto

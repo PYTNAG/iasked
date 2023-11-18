@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message CreateRFCRequest {
+    int32 author_id = 1;
+    string message = 2;
+}
+
+message CreateRFCResponse {
+    int32 rfc_id = 1;
+}
+

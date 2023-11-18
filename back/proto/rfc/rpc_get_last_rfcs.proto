@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message GetLastRFCsRequest {
+    int32 offset = 1;
+    int32 count = 2;
+}

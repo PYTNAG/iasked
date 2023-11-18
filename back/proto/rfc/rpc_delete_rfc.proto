@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message DeleteRFCRequest {
+    int32 rfc_id = 1;
+}

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+message GetUserInfoRequest {
+    int32 user_id = 1;
+}
+
+message GetUserInfoResponse {
+    string username = 1;
+    string email = 2;
+}

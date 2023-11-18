@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package pb;
+
+import "comment/rpc_create_comment.proto";
+import "comment/rpc_get_rfc_comments.proto";
+import "comment/comment.proto";
+import "comment/rpc_count_rfc_comments.proto";
+import "comment/rpc_delete_comment.proto";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/PYTNAG/iasked/pb";
+
+service CommentAPI {
+    rpc CreateComment (CreateCommentRequest) returns (CreateCommentResponse);
+
+    rpc GetRFCComments (GetRFCCommentsRequest) returns (stream Comment);
+    rpc CountRFCComments (CountRFCCommentsRequest) returns (CountRFCCommentsResponse);
+
+    rpc DeleteComment (DeleteCommentRequest) returns (google.protobuf.Empty);
+}
