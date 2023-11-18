@@ -3,6 +3,8 @@ module github.com/PYTNAG/iasked
 go 1.21.3
 
 require (
+	aidanwoods.dev/go-paseto v1.5.0
+	github.com/google/uuid v1.3.0
 	github.com/lib/pq v1.10.9
 	github.com/spf13/viper v1.17.0
 	github.com/stretchr/testify v1.8.4
@@ -12,6 +14,7 @@ require (
 )
 
 require (
+	aidanwoods.dev/go-result v0.1.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
