@@ -9,12 +9,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var (
-	nullUsername = sql.NullString{
-		Valid: false,
-	}
-)
-
 func createRandomUser(t *testing.T, username sql.NullString) *User {
 	hash, err := util.HashPassword(util.RandomPassword())
 	require.NoError(t, err)
@@ -74,14 +68,14 @@ func TestGetUserHash(t *testing.T) {
 		Valid:  true,
 	})
 
+	defer deleteRandomUser(t, createdUser.ID)
+
 	userHash, err := testQueries.GetUserHash(context.Background(), createdUser.ID)
 
 	require.NoError(t, err)
 	require.NotEmpty(t, userHash)
 
 	require.Equal(t, createdUser.Hash, userHash)
-
-	deleteRandomUser(t, createdUser.ID)
 }
 
 func TestGetUserInfo(t *testing.T) {
@@ -91,6 +85,8 @@ func TestGetUserInfo(t *testing.T) {
 		Valid:  true,
 	})
 
+	defer deleteRandomUser(t, createdUser.ID)
+
 	userInfo, err := testQueries.GetUserInfo(context.Background(), createdUser.ID)
 
 	require.NoError(t, err)
@@ -98,8 +94,6 @@ func TestGetUserInfo(t *testing.T) {
 
 	require.Equal(t, createdUser.Email, userInfo.Email)
 	require.Equal(t, createdUser.Username, userInfo.Username)
-
-	deleteRandomUser(t, createdUser.ID)
 }
 
 func TestUpdateEmail(t *testing.T) {
@@ -108,6 +102,8 @@ func TestUpdateEmail(t *testing.T) {
 		String: username,
 		Valid:  true,
 	})
+
+	defer deleteRandomUser(t, createdUser.ID)
 
 	params := UpdateEmailParams{
 		NewEmail: util.RandomEmail(),
@@ -124,8 +120,6 @@ func TestUpdateEmail(t *testing.T) {
 	require.NotEmpty(t, actualUserInfo)
 
 	require.Equal(t, params.NewEmail, actualUserInfo.Email)
-
-	deleteRandomUser(t, createdUser.ID)
 }
 
 func TestUpdateHash(t *testing.T) {
@@ -134,6 +128,8 @@ func TestUpdateHash(t *testing.T) {
 		String: username,
 		Valid:  true,
 	})
+
+	defer deleteRandomUser(t, createdUser.ID)
 
 	expectedHash, err := util.HashPassword(util.RandomPassword())
 	require.NoError(t, err)
@@ -153,8 +149,6 @@ func TestUpdateHash(t *testing.T) {
 	require.NotEmpty(t, actualHash)
 
 	require.Equal(t, expectedHash, actualHash)
-
-	deleteRandomUser(t, createdUser.ID)
 }
 
 func TestUpdateUsername(t *testing.T) {
@@ -163,6 +157,8 @@ func TestUpdateUsername(t *testing.T) {
 		String: username,
 		Valid:  true,
 	})
+
+	defer deleteRandomUser(t, createdUser.ID)
 
 	params := UpdateUsernameParams{
 		NewUsername: util.RandomUsername(),
@@ -179,6 +175,4 @@ func TestUpdateUsername(t *testing.T) {
 	require.NotEmpty(t, actualUserInfo)
 
 	require.Equal(t, params.NewUsername, actualUserInfo.Username)
-
-	deleteRandomUser(t, createdUser.ID)
 }
