@@ -9,7 +9,7 @@ RETURNING id;
 -- name: GetRFCComments :many
 SELECT * FROM comments
 WHERE rfc_id = $1
-ORDER BY created_at DESC
+ORDER BY created_at ASC
 LIMIT sqlc.arg('count') OFFSET sqlc.arg('offset');
 
 -- name: DeleteComment :exec

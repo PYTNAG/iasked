@@ -44,7 +44,7 @@ func (q *Queries) DeleteComment(ctx context.Context, commentID int32) error {
 const getRFCComments = `-- name: GetRFCComments :many
 SELECT id, author_id, rfc_id, created_at FROM comments
 WHERE rfc_id = $1
-ORDER BY created_at DESC
+ORDER BY created_at ASC
 LIMIT $3 OFFSET $2
 `
 
