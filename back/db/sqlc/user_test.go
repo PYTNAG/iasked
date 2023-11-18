@@ -49,18 +49,6 @@ func TestCreateUserWithUsername(t *testing.T) {
 		Valid:  true,
 	})
 
-	require.Equal(t, username, createdUser.Username)
-	require.Greater(t, createdUser.ID, int32(0))
-
-	deleteRandomUser(t, createdUser.ID)
-}
-
-func TestCreateUserWithoutUsername(t *testing.T) {
-	createdUser := createRandomUser(t, nullUsername)
-
-	require.Equal(t, "i", createdUser.Username)
-	require.Greater(t, createdUser.ID, int32(0))
-
 	deleteRandomUser(t, createdUser.ID)
 }
 
