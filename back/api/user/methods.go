@@ -13,11 +13,7 @@ import (
 )
 
 func (s *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-	// get payload
-
 	// validate request
-
-	// authorize request
 
 	nullableUsername := sql.NullString{
 		Valid: req.Username != nil,
