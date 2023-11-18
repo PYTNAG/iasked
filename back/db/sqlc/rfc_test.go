@@ -10,19 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createRandomRFC(t *testing.T, user *User) *Rfc {
-	authorId := sql.NullInt32{
-		Int32: 0,
-		Valid: false,
-	}
-
-	if user != nil {
-		authorId.Int32 = user.ID
-		authorId.Valid = true
-	}
-
+func createRandomRFC(t *testing.T, userId sql.NullInt32) *Rfc {
 	params := CreateRFCParams{
-		AuthorID: authorId,
+		AuthorID: userId,
 		Message:  util.RandomMessage(),
 	}
 
@@ -31,11 +21,16 @@ func createRandomRFC(t *testing.T, user *User) *Rfc {
 
 	return &Rfc{
 		ID:        rfcId,
-		AuthorID:  authorId,
+		AuthorID:  userId,
 		Message:   params.Message,
 		CreatedAt: time.Now(),
 		Archived:  false,
 	}
+}
+
+func deleteRandomRFC(t *testing.T, rfcId int32) {
+	err := testQueries.DeleteRFC(context.Background(), rfcId)
+	require.NoError(t, err)
 }
 
 func compareRfcs(t *testing.T, expected, actual *Rfc) {
@@ -53,19 +48,12 @@ func TestCreateRFC(t *testing.T) {
 		Valid:  true,
 	})
 
-	rfc := createRandomRFC(t, user)
+	rfc := createRandomRFC(t, sql.NullInt32{
+		Int32: user.ID,
+		Valid: true,
+	})
 
-	params := GetLastRFCsParams{
-		Offset: 0,
-		Count:  1,
-	}
-
-	lastRfcs, err := testQueries.GetLastRFCs(context.Background(), params)
-
-	require.NoError(t, err)
-
-	compareRfcs(t, rfc, &lastRfcs[0])
-
+	deleteRandomRFC(t, rfc.ID)
 	deleteRandomUser(t, user.ID)
 }
 
@@ -75,14 +63,20 @@ func TestGetLastRFCs(t *testing.T) {
 		Valid:  true,
 	})
 
+	defer deleteRandomUser(t, user.ID)
+
 	rfcCount := 5
 	offset := 1
 	limit := 3
 
-	rfcs := make([]Rfc, rfcCount)
+	rfcs := make([]*Rfc, rfcCount)
 
 	for i := 0; i < rfcCount; i++ {
-		rfcs[i] = *createRandomRFC(t, user)
+		rfcs[i] = createRandomRFC(t, sql.NullInt32{
+			Int32: user.ID,
+			Valid: true,
+		})
+		defer deleteRandomRFC(t, rfcs[i].ID)
 	}
 
 	params := GetLastRFCsParams{
@@ -95,10 +89,8 @@ func TestGetLastRFCs(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := offset; i < offset+limit; i++ {
-		compareRfcs(t, &rfcs[rfcCount-i-1], &actualRfcs[i-offset])
+		compareRfcs(t, rfcs[rfcCount-i-1], &actualRfcs[i-offset])
 	}
-
-	deleteRandomUser(t, user.ID)
 }
 
 func TestDeleteRFC(t *testing.T) {
@@ -107,11 +99,21 @@ func TestDeleteRFC(t *testing.T) {
 		Valid:  true,
 	})
 
-	rfc := createRandomRFC(t, user)
+	defer deleteRandomUser(t, user.ID)
 
-	err := testQueries.DeleteRFC(context.Background(), rfc.ID)
+	olderRfc := createRandomRFC(t, sql.NullInt32{
+		Int32: user.ID,
+		Valid: true,
+	})
 
-	require.NoError(t, err)
+	defer deleteRandomRFC(t, olderRfc.ID)
+
+	rfc := createRandomRFC(t, sql.NullInt32{
+		Int32: user.ID,
+		Valid: true,
+	})
+
+	deleteRandomRFC(t, rfc.ID)
 
 	params := GetLastRFCsParams{
 		Offset: 0,
@@ -119,12 +121,6 @@ func TestDeleteRFC(t *testing.T) {
 	}
 
 	lastRFCs, err := testQueries.GetLastRFCs(context.Background(), params)
-
-	if len(lastRFCs) == 0 {
-		require.EqualError(t, err, sql.ErrNoRows.Error())
-	} else {
-		require.NotEqual(t, rfc.ID, lastRFCs[0].ID)
-	}
-
-	deleteRandomUser(t, user.ID)
+	require.NoError(t, err)
+	require.NotEqual(t, rfc.ID, lastRFCs[0].ID)
 }
