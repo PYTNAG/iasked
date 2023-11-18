@@ -33,12 +33,13 @@ func deleteRandomRFC(t *testing.T, rfcId int32) {
 	require.NoError(t, err)
 }
 
-func compareRfcs(t *testing.T, expected, actual *Rfc) {
+func compareRFCs(t *testing.T, expected, actual *Rfc) {
 	require.Equal(t, expected.ID, actual.ID)
 	require.Equal(t, expected.AuthorID, actual.AuthorID)
 	require.Equal(t, expected.Message, actual.Message)
 	require.Equal(t, expected.Archived, actual.Archived)
 
+	// expected.CreatedAt initialized after actual.CreatedAt
 	require.True(t, actual.CreatedAt.Add(time.Minute).After(expected.CreatedAt))
 }
 
@@ -88,7 +89,7 @@ func TestGetLastRFCs(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := offset; i < offset+limit; i++ {
-		compareRfcs(t, rfcs[rfcCount-i-1], &actualRfcs[i-offset])
+		compareRFCs(t, rfcs[rfcCount-i-1], &actualRfcs[i-offset])
 	}
 }
 
