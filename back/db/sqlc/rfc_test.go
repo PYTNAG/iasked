@@ -85,7 +85,6 @@ func TestGetLastRFCs(t *testing.T) {
 	}
 
 	actualRfcs, err := testQueries.GetLastRFCs(context.Background(), params)
-
 	require.NoError(t, err)
 
 	for i := offset; i < offset+limit; i++ {
@@ -121,6 +120,7 @@ func TestDeleteRFC(t *testing.T) {
 	}
 
 	lastRFCs, err := testQueries.GetLastRFCs(context.Background(), params)
+
 	require.NoError(t, err)
 	require.NotEqual(t, rfc.ID, lastRFCs[0].ID)
 }
