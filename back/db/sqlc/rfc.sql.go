@@ -49,11 +49,11 @@ LIMIT $2 OFFSET $1
 
 type GetLastRFCsParams struct {
 	Offset int32 `json:"offset"`
-	Limit  int32 `json:"limit"`
+	Count  int32 `json:"count"`
 }
 
 func (q *Queries) GetLastRFCs(ctx context.Context, arg GetLastRFCsParams) ([]Rfc, error) {
-	rows, err := q.db.QueryContext(ctx, getLastRFCs, arg.Offset, arg.Limit)
+	rows, err := q.db.QueryContext(ctx, getLastRFCs, arg.Offset, arg.Count)
 	if err != nil {
 		return nil, err
 	}

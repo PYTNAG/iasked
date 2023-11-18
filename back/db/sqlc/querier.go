@@ -16,6 +16,7 @@ type Querier interface {
 	DeleteRFC(ctx context.Context, rfcID int32) error
 	DeleteUser(ctx context.Context, userID int32) error
 	GetLastRFCs(ctx context.Context, arg GetLastRFCsParams) ([]Rfc, error)
+	GetRFCComments(ctx context.Context, arg GetRFCCommentsParams) ([]Comment, error)
 	GetUserHash(ctx context.Context, userID int32) ([]byte, error)
 	GetUserInfo(ctx context.Context, userID int32) (GetUserInfoRow, error)
 	UpdateEmail(ctx context.Context, arg UpdateEmailParams) error

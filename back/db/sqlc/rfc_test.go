@@ -56,8 +56,8 @@ func TestCreateRFC(t *testing.T) {
 	rfc := createRandomRFC(t, user)
 
 	params := GetLastRFCsParams{
-		Limit:  1,
 		Offset: 0,
+		Count:  1,
 	}
 
 	lastRfcs, err := testQueries.GetLastRFCs(context.Background(), params)
@@ -87,7 +87,7 @@ func TestGetLastRFCs(t *testing.T) {
 
 	params := GetLastRFCsParams{
 		Offset: int32(offset),
-		Limit:  int32(limit),
+		Count:  int32(limit),
 	}
 
 	actualRfcs, err := testQueries.GetLastRFCs(context.Background(), params)
@@ -114,8 +114,8 @@ func TestDeleteRFC(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GetLastRFCsParams{
-		Limit:  1,
 		Offset: 0,
+		Count:  1,
 	}
 
 	lastRFCs, err := testQueries.GetLastRFCs(context.Background(), params)
