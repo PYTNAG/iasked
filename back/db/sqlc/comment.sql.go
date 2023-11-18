@@ -10,6 +10,18 @@ import (
 	"database/sql"
 )
 
+const countRFCComments = `-- name: CountRFCComments :one
+SELECT COUNT(*) FROM comments
+WHERE rfc_id = $1
+`
+
+func (q *Queries) CountRFCComments(ctx context.Context, rfcID int32) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countRFCComments, rfcID)
+	var count int64
+	err := row.Scan(&count)
+	return count, err
+}
+
 const createComment = `-- name: CreateComment :one
 INSERT INTO comments ( author_id, rfc_id )
 VALUES (

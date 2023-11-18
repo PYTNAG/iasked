@@ -15,3 +15,7 @@ LIMIT sqlc.arg('count') OFFSET sqlc.arg('offset');
 -- name: DeleteComment :exec
 DELETE FROM comments
 WHERE id = @comment_id;
+
+-- name: CountRFCComments :one
+SELECT COUNT(*) FROM comments
+WHERE rfc_id = $1;

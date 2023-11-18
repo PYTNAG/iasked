@@ -9,6 +9,7 @@ import (
 )
 
 type Querier interface {
+	CountRFCComments(ctx context.Context, rfcID int32) (int64, error)
 	CreateComment(ctx context.Context, arg CreateCommentParams) (int32, error)
 	CreateRFC(ctx context.Context, arg CreateRFCParams) (int32, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (CreateUserRow, error)
