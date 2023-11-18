@@ -16,7 +16,7 @@ CREATE TABLE "rfcs" (
 CREATE TABLE "comments" (
   "id" serial UNIQUE PRIMARY KEY,
   "author_id" integer REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
-  "rfc_id" integer REFERENCES "rfcs" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+  "rfc_id" integer NOT NULL REFERENCES "rfcs" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
   "created_at" timestamp with time zone NOT NULL DEFAULT now()
 );
 

@@ -21,7 +21,7 @@ RETURNING id
 
 type CreateCommentParams struct {
 	AuthorID sql.NullInt32 `json:"author_id"`
-	RfcID    sql.NullInt32 `json:"rfc_id"`
+	RfcID    int32         `json:"rfc_id"`
 }
 
 func (q *Queries) CreateComment(ctx context.Context, arg CreateCommentParams) (int32, error) {

@@ -12,7 +12,7 @@ import (
 type Comment struct {
 	ID        int32         `json:"id"`
 	AuthorID  sql.NullInt32 `json:"author_id"`
-	RfcID     sql.NullInt32 `json:"rfc_id"`
+	RfcID     int32         `json:"rfc_id"`
 	CreatedAt time.Time     `json:"created_at"`
 }
 
