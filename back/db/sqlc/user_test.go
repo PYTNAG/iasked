@@ -32,14 +32,12 @@ func createRandomUser(t *testing.T, username sql.NullString) *User {
 
 func deleteRandomUser(t *testing.T, userId int32) {
 	err := testQueries.DeleteUser(context.Background(), userId)
-
 	require.NoError(t, err)
 }
 
 func TestCreateUserWithUsername(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -47,9 +45,8 @@ func TestCreateUserWithUsername(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -62,9 +59,8 @@ func TestDeleteUser(t *testing.T) {
 }
 
 func TestGetUserHash(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -79,9 +75,8 @@ func TestGetUserHash(t *testing.T) {
 }
 
 func TestGetUserInfo(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -97,9 +92,8 @@ func TestGetUserInfo(t *testing.T) {
 }
 
 func TestUpdateEmail(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -123,9 +117,8 @@ func TestUpdateEmail(t *testing.T) {
 }
 
 func TestUpdateHash(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
@@ -152,9 +145,8 @@ func TestUpdateHash(t *testing.T) {
 }
 
 func TestUpdateUsername(t *testing.T) {
-	username := util.RandomUsername()
 	createdUser := createRandomUser(t, sql.NullString{
-		String: username,
+		String: util.RandomUsername(),
 		Valid:  true,
 	})
 
