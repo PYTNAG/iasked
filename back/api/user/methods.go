@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	shared_api "github.com/PYTNAG/iasked/api"
 	db "github.com/PYTNAG/iasked/db/sqlc"
 	pb "github.com/PYTNAG/iasked/pb/user"
 	"github.com/PYTNAG/iasked/util"
@@ -13,7 +14,10 @@ import (
 )
 
 func (s *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-	// validate request
+	violations := validateCreateUserRequest(req)
+	if violations != nil {
+		return nil, shared_api.InvalidArgument(violations)
+	}
 
 	nullableUsername := sql.NullString{
 		Valid: req.Username != nil,
